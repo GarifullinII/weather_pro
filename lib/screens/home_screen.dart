@@ -120,7 +120,7 @@ class HomeScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 32),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
@@ -128,8 +128,7 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               Image.asset(
                                 'assets/6.png',
-                                width: 72,
-                                height: 72,
+                                scale: 8,
                               ),
                             ],
                           ),
@@ -170,8 +169,7 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               Image.asset(
                                 'assets/12.png',
-                                width: 72,
-                                height: 72,
+                                scale: 8,
                               ),
                             ],
                           ),
@@ -213,7 +211,7 @@ class HomeScreen extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
@@ -221,8 +219,7 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             Image.asset(
                               'assets/13.png',
-                              width: 72,
-                              height: 72,
+                              scale: 8,
                             ),
                           ],
                         ),
@@ -263,8 +260,7 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             Image.asset(
                               'assets/14.png',
-                              width: 72,
-                              height: 72,
+                              scale: 8,
                             ),
                           ],
                         ),
