@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
                 width: 300,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white,
+                  color: Colors.pink,
                 ),
               ),
             ),
@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                 width: 300,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white,
+                  color: Colors.pink,
                 ),
               ),
             ),
@@ -50,15 +50,45 @@ class HomeScreen extends StatelessWidget {
                 height: 300,
                 width: 600,
                 decoration: const BoxDecoration(
-                  color: Colors.blueAccent,
+                  color: Colors.cyanAccent,
                 ),
               ),
             ),
             BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+              filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
               child: Container(
                 decoration: const BoxDecoration(color: Colors.transparent),
               ),
+            ),
+            const Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Text(
+                        '📍Aix-en-Provence',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Text(
+                        'Good Morning',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
             ),
           ],
         ),
