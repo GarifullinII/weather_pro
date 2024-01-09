@@ -1,3 +1,3 @@
 # weather_pro
 
-Use bloc
+Use flutter_bloc, geolocator, weather, intl, equatable

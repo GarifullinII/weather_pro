@@ -2,9 +2,38 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:weather_pro/weather_bloc/weather_bloc.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Widget getWeatherIcon(int code) {
+    switch (code) {
+      case >= 200 && < 300:
+        return Image.asset('assets/1.png');
+      case >= 300 && < 400:
+        return Image.asset('assets/2.png');
+      case >= 500 && < 600:
+        return Image.asset('assets/3.png');
+      case >= 600 && < 700:
+        return Image.asset('assets/4.png');
+      case >= 700 && < 800:
+        return Image.asset('assets/5.png');
+      case == 800:
+        return Image.asset('assets/6.png');
+      case > 800 && <= 804:
+        return Image.asset('assets/7.png');
+      default:
+        return Image.asset('assets/7.png');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,243 +89,261 @@ class HomeScreen extends StatelessWidget {
                 decoration: const BoxDecoration(color: Colors.transparent),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Text(
-                    '📍Aix-en-Provence',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Text(
-                    'Good Morning',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Image.asset(
-                  'assets/1.png',
-                ),
-                const Center(
-                  child: Text(
-                    '21°C',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 55,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                const Center(
-                  child: Text(
-                    'THUNDERSTORM',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const Center(
-                  child: Text(
-                    'Friday 16 • 09.41am',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 32),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            BlocBuilder<WeatherBloc, WeatherState>(
+              builder: (context, state) {
+                if (state is WeatherSuccessState) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Column(
-                            children: [
-                              Image.asset(
-                                'assets/6.png',
-                                scale: 8,
-                              ),
-                            ],
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          '📍${state.weather.areaName}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w300,
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 4),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 8),
+                        child: Text(
+                          'Здравствуйте',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      getWeatherIcon(state.weather.weatherConditionCode!),
+                      Center(
+                        child: Text(
+                          '${state.weather.temperature!.celsius!.round()} °C',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 62,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          state.weather.weatherDescription!.toUpperCase(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          DateFormat('EEEE dd .')
+                              .add_jm()
+                              .format(state.weather.date!),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 32),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
                               children: [
-                                Text(
-                                  'Sunrise',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w200,
-                                  ),
-                                ),
                                 Column(
                                   children: [
-                                    Text(
-                                      '5:34 am',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                    Image.asset(
+                                      'assets/6.png',
+                                      scale: 8,
                                     ),
                                   ],
-                                )
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 4),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Восход',
+                                        // 'Sunrise'
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w200,
+                                        ),
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            DateFormat()
+                                                .add_jm()
+                                                .format(state.weather.sunrise!),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                        ],
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    Image.asset(
+                                      'assets/12.png',
+                                      scale: 8,
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 4),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Закат',
+                                        // 'Sunrise',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w200,
+                                        ),
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            DateFormat()
+                                                .add_jm()
+                                                .format(state.weather.sunset!),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        height: 32,
+                        color: Colors.grey,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
+                          Row(
                             children: [
-                              Image.asset(
-                                'assets/12.png',
-                                scale: 8,
+                              Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/13.png',
+                                    scale: 8,
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 4),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Макс темп.',
+                                      // 'Temp Max',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w200,
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          '${state.weather.tempMax!.celsius!.round()} °C',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 4),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Sunrise',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w200,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/14.png',
+                                    scale: 8,
                                   ),
-                                ),
-                                Column(
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 4),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      '6:34 pm',
+                                    const Text(
+                                      'Мин темп.',
+                                      // 'Temp Min',
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w500,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w200,
                                       ),
                                     ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          '${state.weather.tempMin!.celsius!.round()} °C',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   ],
-                                )
-                              ],
-                            ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ],
-                  ),
-                ),
-                const Divider(
-                  height: 32,
-                  color: Colors.grey,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Column(
-                          children: [
-                            Image.asset(
-                              'assets/13.png',
-                              scale: 8,
-                            ),
-                          ],
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 4),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Temp Max',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w200,
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    '12°C',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Image.asset(
-                              'assets/14.png',
-                              scale: 8,
-                            ),
-                          ],
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 4),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Temp Min',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w200,
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    '8°C',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                  );
+                } else {
+                  return Container();
+                }
+              },
             ),
           ],
         ),
